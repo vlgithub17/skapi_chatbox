@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/skapi-js@latest/dist/skapi.js"></script>
+    <script>
+        const skapi = new Skapi("ap22LIuczdCnhZyN9Sdw", "a4dd8739-ceac-4fec-b708-8019b3cf131a");
+    </script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Chatbox</h1>
+
+    <form onsubmit="connectGroup(event)">
+        <input id="group-name" name="group" type="text" placeholder="Insert group name" required>
+        <input id="connect" type="submit" value="Connect">
+    </form>
+
+    <div id="chatbox"></div>
+
+    <form onsubmit="sendMessage(event)">
+        <input id="msg" name="msg" type="text" placehol_der="Insert message here..." required>
+        <input id="send" type="submit" value="Send">
+    </form>
+
+    <script>
+        let groupName = document.getElementById('group-name');
+        let connectButton = document.getElementById('connect');
+        let message = document.getElementById('msg')
+
+        skapi.getProfile().then(
+            profile => {
+                console.log(profile)
+
+                if(!profile){
+                    window.location.href="login.html"
+                }
+                else{
+                    skapi.connectRealtime(RealtimeCallback)
+                }
+            }
+        )
+
+        async function RealtimeCallback(rt){
+            console.log(rt)
+
+            if(rt.sender){
+                let name = await checkName(rt.sender)
+
+                let chatbox = document.getElementById('chatbox')
+                let messageDiv = document.createElement('div')
+
+                if (rt.type === 'message'){
+                    messageDiv.innerHTML= /*html*/`
+                    <p>${name}:</p>
+                    <p>${rt.message.msg}</p>`
+
+                    chatbox.append(messageDiv)
+                }
+                else if(rt.type ==='notice'){
+                    messageDiv.innerHTML= /*html*/`
+                    <p>${name} joined the groupchat</p>`
+
+                    chatbox.append(messageDiv)
+                }
+
+            }
+        }
+
+        function connectGroup(event){
+            groupName = groupName.value;
+            skapi.joinRealtime(event).then(
+                ()=>{
+                    console.log(`Connected to ${groupName}`)
+                }
+            )
+        }
+        
+        function sendMessage(event){
+            skapi.postRealtime(event, groupName).then(
+                ()=>message.value=""
+            )
+        }
+
+        let users ={}
+        async function checkName(sender_id){
+
+            if(users[sender_id]){
+                return users[sender_id]
+            }
+            else{
+                let user_info = await skapi.getUsers({
+                    searchFor: 'user_id',
+                    value: sender_id
+                })
+
+                console.log({user_info})
+                users[sender_id] = user_info.list[0].name;
+                return users[sender_id]
+            }
+        }
+
+    </script>
+</body>
+</html>

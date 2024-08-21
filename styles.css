@@ -1,0 +1,114 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Form container */
+form {
+    display: flex;
+    gap: 0.25rem;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+}
+
+
+#chatbox {
+    width: 200%;
+    max-width: 420px;
+    height: 400px;
+    border: 1px solid #ccc;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 10px;
+}
+
+#chatbox div {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#chatbox p {
+    margin: 5px 0;
+}
+
+#chatbox p#username {
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+/* Label styling */
+label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 16px;
+    flex: 1
+}
+
+label input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-top: 5px;
+}
+
+/* Input field specific styles */
+input[type="email"],
+input[type="name"],
+input[type="password"] {
+    width: 100%;
+}
+
+/* Submit button styling */
+input[type="submit"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+input[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    form {
+        padding: 15px;
+    }
+
+    input[type="submit"] {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
